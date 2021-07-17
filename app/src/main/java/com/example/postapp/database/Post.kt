@@ -1,3 +1,16 @@
 package com.example.postapp.database
 
-data class Post{}
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Post(
+    @PrimaryKey(autoGenerate = true)
+    var id:Long,
+
+    var title:String,
+    var body:String
+)
+
+
