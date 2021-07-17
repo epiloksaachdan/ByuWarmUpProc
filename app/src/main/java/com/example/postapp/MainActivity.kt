@@ -1,5 +1,6 @@
 package com.example.postapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
@@ -18,22 +19,33 @@ class MainActivity : AppCompatActivity() {
         loadData()
     }
 
+    override fun onStart() {
+        super.onStart()
+        setupmovetoinsert()
+
+    }
+
+    fun setupmovetoinsert(){
+        fabadd?.setOnClickListener {
+            val intent = Intent(this, insertPostActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     private fun setAdapter() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = postAdapter
 
     }
 
-    private fun deleteData(){
-
-    }
-
     private fun loadData() {
 
         val postList = arrayListOf<Post>()
-        for (i in 1..5) {
+        for (i in 1..15) {
             postList.add(Post(1,"Title $i","ini isinya"))
         }
         postAdapter.updateData(postList)
     }
+
+
 }
