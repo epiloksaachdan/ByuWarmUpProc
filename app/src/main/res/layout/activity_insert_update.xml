@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/tvinsertpost"
+        android:id="@+id/tvInsertUpdateTitle"
         android:layout_height="0dp"
         android:layout_width="wrap_content"
         android:text="Insert Post"
@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Title"
-        app:layout_constraintTop_toBottomOf="@+id/tvinsertpost"
+        app:layout_constraintTop_toBottomOf="@+id/tvInsertUpdateTitle"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="24dp"
         />
