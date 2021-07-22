@@ -1,5 +1,6 @@
 package com.example.postapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        showPost()
+        setListener()
+
+        //insert()
+
+    }
+
+//    private fun insert() {
+//        RetrofitClient.instance.insert(
+////            "achdan",
+////            tvPostTitle.text.toString(),
+////            tvPostBody.text.toString()
+//            "achdan",
+//            "title 5",
+//            "body 5"
+//
+//        ).enqueue(object : Callback<CreatePostResponse>{
+//            override fun onResponse(
+//                call: Call<CreatePostResponse>,
+//                response: Response<CreatePostResponse>
+//            ) {
+//
+//            }
+//
+//            override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+//
+//                tvtitle.text = "FAIL"
+//            }
+//        })
+//    }
+
+    private fun showPost() {
         recyclerview.setHasFixedSize(true)
         recyclerview.layoutManager =  LinearLayoutManager( this)
 
@@ -35,7 +68,19 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-
     }
+
+    private fun navigate (id: String){
+        val intent = Intent(this, InsertUpdateActivity::class.java)
+        intent.putExtra("ID",id)
+        startActivity(intent)
+    }
+
+    private fun setListener(){
+        fabadd.setOnClickListener{
+            navigate("0")
+        }
+    }
+
 
 }
