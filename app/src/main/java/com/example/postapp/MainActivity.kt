@@ -71,14 +71,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigate (id: String){
+        println(id)
         val intent = Intent(this, InsertUpdateActivity::class.java)
-        intent.putExtra("ID",id)
+        println("checked")
+        //intent.putExtra("id",id)
         startActivity(intent)
     }
 
     private fun setListener(){
         fabadd.setOnClickListener{
             navigate("0")
+            println("checked")
         }
     }
 

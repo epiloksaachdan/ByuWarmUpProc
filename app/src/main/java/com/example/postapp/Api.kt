@@ -1,4 +1,3 @@
-import androidx.room.Insert
 import com.example.postapp.CreatePostResponse
 import com.example.postappapi.PostResponse
 import retrofit2.Call
@@ -9,8 +8,8 @@ interface Api {
     @GET("posts/achdan")
     fun getPosts(): Call<ArrayList<PostResponse>>
 
-    @Insert
-    fun insert(post: CreatePostResponse): String
+    @POST("post")
+    fun insert(@Body post: CreatePostResponse): Call<PostResponse>
 
 //    @Query("SELECT *FROM PostResponse")
 //    fun get(): List<PostResponse>

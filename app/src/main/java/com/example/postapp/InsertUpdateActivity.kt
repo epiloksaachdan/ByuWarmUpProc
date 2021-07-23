@@ -3,8 +3,12 @@ package com.example.postapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.postappapi.PostResponse
 import com.example.postappapi.RetrofitClient
 import kotlinx.android.synthetic.main.activity_insert_update.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class InsertUpdateActivity : AppCompatActivity() {
 
@@ -14,7 +18,7 @@ class InsertUpdateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_insert_update)
 
-        id = intent.getLongExtra("ID",0).toString()
+        //id = intent.getStringExtra("id").toString()
 
         if(id == "0"){
             //insert
@@ -41,7 +45,7 @@ class InsertUpdateActivity : AppCompatActivity() {
                 var title = ettitle.text.toString()
                 var body = etbody.text.toString()
                 if (id == "0"){
-                    insert(title,body)
+                    insert("achdan", title, body)
                 }
                 else {
                     //update(id,title,body)
@@ -64,12 +68,27 @@ class InsertUpdateActivity : AppCompatActivity() {
         }
     }
 
-    private fun insert(title: String,body: String){
+    private fun insert(user: String,title: String,body: String){
         //val postResponse = PostAppAdapter(id)
-        val postapp = CreatePostResponse(id,"achdan",title,body)
-        val id = RetrofitClient.instance.insert(postapp)
+        val post = CreatePostResponse("achdan",title,body)
+        val id = RetrofitClient.instance.insert(post).enqueue(object : Callback<PostResponse>{
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                if (response.isSuccessful){
+                    val id = response.body()?.id
+                    val user = response.body()?.user
+                    val title = response.body()?.title
+                    val body = response.body()?.body
+                    println("RESULT ID $id")
+                }
+            }
 
-        if (id != "" ){
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                t.printStackTrace()
+            }
+
+        })
+
+        if (id.equals("")){
             finish()
             Toast.makeText(this,"Insert Success", Toast.LENGTH_SHORT).show()
         }
@@ -77,6 +96,10 @@ class InsertUpdateActivity : AppCompatActivity() {
             Toast.makeText(this,"Error", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+
+
 ////    private fun update(id: Long,title: String,body: String){
 //        val post = Post(id,title,body)
 //        val row = AppDatabase.getInstance(this).postDao().update(post)
