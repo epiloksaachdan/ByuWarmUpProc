@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.postappapi.PostResponse
 import com.example.postappapi.RetrofitClient
 import kotlinx.android.synthetic.main.activity_insert_update.*
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,6 +20,7 @@ import retrofit2.Response
 class InsertUpdateActivity : AppCompatActivity() {
 
     private var id = "0"
+    private val list = ArrayList<PostResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +37,20 @@ class InsertUpdateActivity : AppCompatActivity() {
             tvInsertUpdateTitle.text="Update Post"
             //load data
 
-//            val post = AppDatabase.getInstance(this).postDao().getById(id)
-//            ettitle.setText(post.title)
-//            etbody.setText(post.body)
+            RetrofitClient.instance.getById(id).enqueue(object: Callback<ArrayList<PostResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<PostResponse>>,
+                    response: Response<ArrayList<PostResponse>>
+                ) {
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+
+                }
+
+            })
+
         }
 
         setListener()
@@ -51,21 +64,10 @@ class InsertUpdateActivity : AppCompatActivity() {
                 var title = ettitle.text.toString()
                 var body = etbody.text.toString()
                 if (id == "0"){
-                    if (!isNetworkAvailable == true) {
-                        AlertDialog.Builder(this)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle("Internet Connection Alert")
-                            .setMessage("Please Check Your Internet Connection")
-                            .setPositiveButton(
-                                "Close"
-                            ) { dialogInterface, i -> finish() }.show()
-                    } else if (isNetworkAvailable == true) {
-                        insert("achdan", title, body)
-                    }
-
+                    insert("achdan", title, body)
                 }
                 else {
-                    //update(id,title,body)
+                    update(id,title,body)
                 }
             }
             else{
@@ -138,33 +140,9 @@ class InsertUpdateActivity : AppCompatActivity() {
         }
         else{
             finish()
-            Toast.makeText(this,"Insert Success", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"Update Success", Toast.LENGTH_SHORT).show()
         }
     }
-
-
-
-    val isNetworkAvailable: Boolean
-        get() {
-            val connectivityManager =
-                getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (connectivityManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    val capabilities =
-                        connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-                    if (capabilities != null) {
-                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                            return true
-                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                            return true
-                        } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                            return true
-                        }
-                    }
-                }
-            }
-            return false
-        }
 
 
 ////    private fun update(id: Long,title: String,body: String){

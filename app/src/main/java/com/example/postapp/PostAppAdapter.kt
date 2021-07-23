@@ -46,4 +46,7 @@ class PostAppAdapter(private val list: ArrayList<PostResponse>): RecyclerView.Ad
     }
 
 
+    fun setOnClickListener(listener: (PostResponse) -> Unit){
+        this.listener = listener
+    }
 }

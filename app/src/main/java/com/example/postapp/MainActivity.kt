@@ -14,10 +14,13 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     private val list = ArrayList<PostResponse>()
 
+    private val postAdapter: PostAppAdapter by lazy { PostAppAdapter(list) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setAdapter()
         showPost()
         setListener()
 
@@ -25,35 +28,29 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    private fun insert() {
-//        RetrofitClient.instance.insert(
-////            "achdan",
-////            tvPostTitle.text.toString(),
-////            tvPostBody.text.toString()
-//            "achdan",
-//            "title 5",
-//            "body 5"
-//
-//        ).enqueue(object : Callback<CreatePostResponse>{
-//            override fun onResponse(
-//                call: Call<CreatePostResponse>,
-//                response: Response<CreatePostResponse>
-//            ) {
-//
-//            }
-//
-//            override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-//
-//                tvtitle.text = "FAIL"
-//            }
-//        })
-//    }
+    override fun onResume() {
+        super.onResume()
+        showPost()
+
+    }
+
+    private fun setAdapter(){
+        postAdapter.setOnClickListener {
+//            val intent = Intent(this, InsertUpdateActivity::class.java)
+//            intent.putExtra("id", it.id)
+//            startActivity(intent)
+            navigate(it.id)
+        }
+
+
+    }
 
     private fun showPost() {
+
         recyclerview.setHasFixedSize(true)
         recyclerview.layoutManager =  LinearLayoutManager( this)
 
-        RetrofitClient.instance.getPosts().enqueue(object: Callback<ArrayList<PostResponse>>{
+         RetrofitClient.instance.getPosts().enqueue(object: Callback<ArrayList<PostResponse>>{
             override fun onResponse(
                 call: Call<ArrayList<PostResponse>>,
                 response: Response<ArrayList<PostResponse>>
@@ -67,14 +64,15 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+
         })
+        postAdapter.updateData(list)
+
     }
 
-    private fun navigate (id: String){
-        println(id)
+    private fun navigate (id: String?){
         val intent = Intent(this, InsertUpdateActivity::class.java)
-        println("checked")
-        //intent.putExtra("id",id)
+        intent.putExtra("id", id)
         startActivity(intent)
     }
 
@@ -84,7 +82,4 @@ class MainActivity : AppCompatActivity() {
             println("checked")
         }
     }
-
-
-
 }

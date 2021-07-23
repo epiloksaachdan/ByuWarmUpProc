@@ -12,14 +12,17 @@ interface Api {
     @POST("post")
     fun insert(@Body post: CreatePostResponse): Call<PostResponse>
 
-    @PUT(  "post/id")
+    @PUT(  "post/{id}")
     fun update(@Body post: CreatePostResponse): Call<PostResponse>
+
+    @GET("posts/achdan")
+    fun getById(@Query ("id") id:String): Call<ArrayList<PostResponse>>
+
 
 //    @Query("SELECT *FROM PostResponse")
 //    fun get(): List<PostResponse>
 //
-//    @Query("SELECT *FROM PostResponse WHERE id = :id")
-//    fun getById(id : String): PostResponse
+
 
 
 }
