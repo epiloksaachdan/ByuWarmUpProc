@@ -1,4 +1,3 @@
-import androidx.room.Update
 import com.example.postapp.CreatePostResponse
 import com.example.postappapi.PostResponse
 import retrofit2.Call
@@ -17,6 +16,9 @@ interface Api {
 
     @GET("posts/achdan")
     fun getById(@Query ("id") id:String): Call<ArrayList<PostResponse>>
+
+    @DELETE("post/{id}")
+    fun delete(@Path("id") id: PostResponse): Call<Void>
 
 
 //    @Query("SELECT *FROM PostResponse")

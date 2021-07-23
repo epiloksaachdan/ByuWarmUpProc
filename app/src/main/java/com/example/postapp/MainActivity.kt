@@ -3,6 +3,8 @@ package com.example.postapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.postappapi.PostResponse
 import com.example.postappapi.RetrofitClient
@@ -25,7 +27,6 @@ class MainActivity : AppCompatActivity() {
         setListener()
 
         //insert()
-
     }
 
     override fun onResume() {
@@ -40,6 +41,32 @@ class MainActivity : AppCompatActivity() {
 //            intent.putExtra("id", it.id)
 //            startActivity(intent)
             navigate(it.id)
+        }
+        postAdapter.setOnDeleteListener {
+            AlertDialog.Builder(this)
+                .setTitle("delete")
+                .setMessage("sure ?")
+                .setPositiveButton("Yes"){
+                        dialog,_ ->
+//                    AppDatabase.getInstance(this).postDao().delete(it)
+                    RetrofitClient.instance.delete(it).enqueue(object : Callback<Void>{
+                        override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                            //Toast.makeText(this,"Deleted", Toast.LENGTH_SHORT).show()
+                            showPost()
+                            dialog.dismiss()
+                        }
+
+                        override fun onFailure(call: Call<Void>, t: Throwable) {
+                            TODO("Not yet implemented")
+                        }
+
+                    })
+
+                }
+                .setNegativeButton("No"){
+                        dialog,_ -> dialog.dismiss()
+                }
+                .show()
         }
 
 
@@ -79,7 +106,6 @@ class MainActivity : AppCompatActivity() {
     private fun setListener(){
         fabadd.setOnClickListener{
             navigate("0")
-            println("checked")
         }
     }
 }

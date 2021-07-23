@@ -3,6 +3,7 @@ package com.example.postapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.postappapi.PostResponse
 import kotlinx.android.synthetic.main.list_post_item.view.*
@@ -45,8 +46,10 @@ class PostAppAdapter(private val list: ArrayList<PostResponse>): RecyclerView.Ad
         notifyDataSetChanged()
     }
 
-
     fun setOnClickListener(listener: (PostResponse) -> Unit){
         this.listener = listener
+    }
+    fun setOnDeleteListener(deleteListener: (PostResponse) -> Unit){
+        this.deleteListener = deleteListener
     }
 }
